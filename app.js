@@ -31,19 +31,19 @@ let todoList = [
 ];
 
 // GET /api/todos
-// app.get("/api/todo", (req, res) => res.send(todoList.filter(todoItems => todoItems.todo;)));
-app.get("/api/todo", (req, res) => {
+// app.get("/api/todos", (req, res) => res.send(todoList.filter(todoItems => todoItems.todo;)));
+app.get("/api/todos", (req, res) => {
   return res.json(todoList);
 });
 
 // GET /api/todos/:id
-app.get("/api/todo/:id", (req, res) => res.send(todoList.filter(todoItems => {
+app.get("/api/todos/:id", (req, res) => res.send(todoList.filter(todoItems => {
   // console.log(todoItems.id, req.params.id);
   return todoItems.id == req.params.id;
 })));
 
 // POST /api/todos
-app.post("/api/todo", (req, res) => {
+app.post("/api/todos", (req, res) => {
   if (req.body.todo) {
     const maxId = todoList.reduce((max, currentTodo) => {
       if (currentTodo.id > max) {
@@ -67,7 +67,7 @@ app.post("/api/todo", (req, res) => {
 
 // PUT /api/todos/:id can t find 404 if found update
 
-app.put("/api/todo/:id", (req, res) => {
+app.put("/api/todos/:id", (req, res) => {
   let newTodo = null;
   for (let i = 0; i < todoList.length; i++) {
     if (todoList[i].id == req.params.id) {
@@ -83,7 +83,7 @@ app.put("/api/todo/:id", (req, res) => {
   }
 })
 // DELETE /api/todos/:id
-app.delete("/api/todo/:id", (req, res) => {
+app.delete("/api/todos/:id", (req, res) => {
   for (let i = 0; i < todoList.length; i++) {
     if (todoList[i].id == req.params.id) {
       todoList.splice(i, 1);
