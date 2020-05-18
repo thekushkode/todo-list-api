@@ -1,11 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const methodOverride = require('method-override');
 const app = express();
+
+app.set('view engine', 'ejs'); //
+app.set('views', 'views') //
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(express.static('./public'));
+app.use(methodOverride('_method'));
 
 let todoList = [
   {
@@ -29,6 +33,16 @@ let todoList = [
     todo: 'Wrestle Rottweilers',
   },
 ];
+
+
+app.get('/about', function (req, res) {
+  res.render('about', {
+    title: 'My Day',
+    task: todoList,
+  });
+});
+
+
 
 // GET /api/todos
 // app.get("/api/todos", (req, res) => res.send(todoList.filter(todoItems => todoItems.todo;)));
@@ -57,7 +71,11 @@ app.post("/api/todos", (req, res) => {
       todo: req.body.todo,
     };
     todoList.push(newTodo);
-    res.json(req.body);
+    if (req.query.form) {
+      res.redirect('/about');
+    } else {
+      res.json(req.body);
+    }
   } else {
     res.status(400).json({
       error: 'Please provide todo text',
@@ -73,7 +91,7 @@ app.put("/api/todos/:id", (req, res) => {
     if (todoList[i].id == req.params.id) {
       newTodo = { id: req.params.id, todo: req.body.todo };
       todoList.splice(i, 1, newTodo);
-      res.json(newTodo);
+      res.redirect("/about");
     }
   }
   if (newTodo === null) {
@@ -87,7 +105,7 @@ app.delete("/api/todos/:id", (req, res) => {
   for (let i = 0; i < todoList.length; i++) {
     if (todoList[i].id == req.params.id) {
       todoList.splice(i, 1);
-      res.json(todoList);
+      res.redirect("/about");
     }
   }
   if (req.params === null) {

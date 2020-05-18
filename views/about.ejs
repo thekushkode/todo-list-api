@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('partials/head.ejs') %>
+</head>
+
+<body>
+    <h1><%= title %></h1>
+    <p>Stuff To-Do:</p>
+    <ul>
+        <% task.forEach(item => { %>
+        <div>
+            <form action="/api/todos/<%= item.id %>?form=true&_method=PUT" method="POST">
+                <input type="text" id="todo<%= item.id %>" name="todo" value="<%= item.todo %>">
+                <button type="submit">Edit</button>
+            </form>
+            <form action="/api/todos/<%= item.id %>?form=true&_method=DELETE" method="POST">
+                <button type="submit">Delete</button>
+
+            </form>
+        </div>
+        <!-- <li><%= item.todo %> </li> -->
+        <% }) %>
+    </ul>
+    <form action="/api/todos?form=true" method="POST">
+        <label for="todo">To-Do</label>
+        <input type="hidden" name="_method" id="_todo">
+        <input type="text" name="todo" placeholder="Enter a To-Do: ">
+        <button type="submit">Add</button>
+    </form>
+    <%- include('partials/pageend.ejs') %>
+</body>
+
+</html>
+
+<!-- This is a template string for html: <%= %> -->
