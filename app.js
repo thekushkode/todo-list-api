@@ -1,15 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
+const contactRouter = require('./routes/contact')
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.set('view engine', 'ejs'); //
-app.set('views', 'views') //
+app.set('view engine', 'ejs');
+app.set('views', 'views')
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('./public'));
 app.use(methodOverride('_method'));
+app.use('/contact', contactRouter);
 
 let todoList = [
   {
@@ -37,11 +40,10 @@ let todoList = [
 
 app.get('/about', function (req, res) {
   res.render('about', {
-    title: 'My Day',
+    title: 'Sh*t To-Do...',
     task: todoList,
   });
 });
-
 
 
 // GET /api/todos
@@ -117,5 +119,5 @@ app.delete("/api/todos/:id", (req, res) => {
 
 
 app.listen(3000, function () {
-  console.log('Todo List API is now listening on port 3000...');
+  console.log(`Listening.. open http://localhost:${PORT} to view.`);
 });
